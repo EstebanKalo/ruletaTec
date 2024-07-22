@@ -36,24 +36,24 @@ function martingala(){
     exit 1
   fi
 
-  echo -e "\n${yellowColour}[+]${endColour}${grayColour} Vamos a empezar a jugar con una apuesta inicial de${endColour}${yellowColour} $initial_bet€${endColour}${grayColour} y se jugara continuamente numero${endColour}"
+  echo -e "\n${yellowColour}[+]${endColour}${grayColour} Vamos a empezar a jugar con una apuesta inicial de${endColour}${yellowColour} $initial_bet€${endColour}${grayColour} y se jugara continuamente${endColour}"
 
   current_bet=$initial_bet
   while true; do
     random_number=$(($RANDOM % 37))
-    echo -e "${blueColour}[+]${endColour}${grayColour} Te toco el numero:${endColour}${purpleColour} $random_number${endColour}"
+    echo -e "${blueColour}[+]${endColour}${grayColour} Numero generado:${endColour}${purpleColour} $random_number${endColour}"
 
     if (( $random_number == 0 )); then
-      echo -e "${redColour}[!]${endColour}${grayColour} Ha salido 0, pierdes :(.${endColour}"
+      echo -e "${redColour}[!]${endColour}${grayColour} Salio 0, perdiste :(.${endColour}"
       money=$(($money - $current_bet))
       current_bet=$(($current_bet * 2))
     else
       if [[ ( $par_impar == "par" && $(( $random_number % 2 )) == 0 ) || ( $par_impar == "impar" && $(( $random_number % 2 )) != 0 ) ]]; then
-        echo -e "${greenColour}[+]${endColour}${grayColour} Ganaste!(No te pongas chupeton)${endColour}"
+        echo -e "${greenColour}[+]${endColour}${grayColour} Ganaste! Facilitooo${endColour}"
         money=$(($money + $current_bet))
         current_bet=$initial_bet
       else
-        echo -e "${redColour}[!]${endColour}${grayColour} Perdiste!${endColour}"
+        echo -e "${redColour}[!]${endColour}${grayColour} Perdiste! Nos vamos al pozo ${endColour}"
         money=$(($money - $current_bet))
         current_bet=$(($current_bet * 2))
       fi
@@ -62,19 +62,29 @@ function martingala(){
     echo -e "${yellowColour}[+]${endColour}${grayColour} Dinero actual:${endColour}${yellowColour} $money€${endColour}"
 
     if (( $money <= 0 )); then
-      echo -e "${redColour}[!]${endColour}${grayColour} Te has quedado sin dinero, solta esto no ves que los chicos tienen hambre culiado ${endColour}"
+      echo -e "${redColour}[!]${endColour}${grayColour} Te quedaste sin plata.${endColour}"
       exit 1
     fi
 
     if (( $current_bet > $money )); then
-      echo -e "${redColour}[!]${endColour}${grayColour} No tienes suficiente dinero para duplicar la apuesta, te pusiste chupeton. Juego terminado.${endColour}"
+      echo -e "${redColour}[!]${endColour}${grayColour} No llegas para duplicar la apuesta. Juego terminado.${endColour}"
       exit 1
     fi
+
+ # Esto es falopeada mia nomas
+
+#    echo -ne "${yellowColour}[+]${endColour}${grayColour} Cuanto le pones a la siguiente ronda? ->${endColour} " && read current_bet
+#    if (( $current_bet > $money )); then
+#      echo -e "${redColour}[!]${endColour}${grayColour} No te alcanza broder. Juego terminado.${endColour}"
+#      exit 1
+#    fi
+
+    sleep 4
   done
 }
 
-while getopts "m:t:h" arg; do 
-  case $arg in 
+while getopts "m:t:h" arg; do
+  case $arg in
     m) money=$OPTARG;;
     t) technique=$OPTARG;;
     h) helpPanel;;
@@ -91,3 +101,4 @@ else
   echo -e "${redColour}[!]${endColour}${grayColour} Tecnica no implementada.${endColour}"
   helpPanel
 fi
+
