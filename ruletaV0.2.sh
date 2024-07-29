@@ -56,9 +56,13 @@ function martingala(){
       money=$(($money - $current_bet))
       current_bet=$(($current_bet * 2))
     else
-      if [[ ( $bet_choice == "par" && $(( $random_number % 2 )) == 0 ) || ( $bet_choice == "impar" && $(( $random_number % 2 )) != 0 ) || ( $bet_choice == "numero" && $random_number == $bet_number ) ]]; then
+      if [[ ( $bet_choice == "par" && $(( $random_number % 2 )) == 0 ) || ( $bet_choice == "impar" && $(( $random_number % 2 )) != 0 ) ]]; then
         echo -e "${greenColour}[+]${endColour}${grayColour} ¡Ganaste! Facilitooo${endColour}"
         money=$(($money + $current_bet))
+        echo -ne "${yellowColour}[+]${endColour}${grayColour} ¿Cuánto dinero quieres apostar en la siguiente ronda? ->${endColour} " && read current_bet
+      elif [[ $bet_choice == "numero" && $random_number == $bet_number ]]; then
+        echo -e "${greenColour}[+]${endColour}${grayColour} ¡Ganaste! Adivinaste el número${endColour}"
+        money=$(($money + $current_bet * 3))
         echo -ne "${yellowColour}[+]${endColour}${grayColour} ¿Cuánto dinero quieres apostar en la siguiente ronda? ->${endColour} " && read current_bet
       else
         echo -e "${redColour}[!]${endColour}${grayColour} ¡Perdiste! Nos vamos al pozo ${endColour}"
@@ -75,7 +79,7 @@ function martingala(){
     fi
 
     if (( $current_bet > $money )); then
-      echo -e "${redColour}[!]${endColour}${grayColour} No te alcanza para duplicar la apuesta. Juego terminado.${endColour}"
+      echo -e "${redColour}[!]${endColour}${grayColour} No llegas para duplicar la apuesta. Juego terminado.${endColour}"
       exit 1
     fi
 
